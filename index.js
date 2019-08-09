@@ -22,24 +22,26 @@ server.get('/now', (reg, res) => {
 });
 
 
-// GET /
+// GET /hubs
 server.get('/hubs', (req, res) => { // This is a route handler...
   // res.send('Hello World' + ' ' + 'Give me a break!');
   // Hubs.find() returns a promise. 
-  Hubs.find().then(hubs => {
-    console.log(hubs)
-    // .json will covert the data passed to json...
-    // Also tells the client we're sending json through an HTTP header
-    res.status(200).json(hubs);
+  Hubs.find()
+  	.then(hubs => {
+	    console.log('hubs', hubs);
+	    // .json will covert the data passed to json...
+	    // Also tells the client we're sending json through an HTTP header
+    	res.status(200).json(hubs);
   }).catch(error => {
     // 500 code sent if there is a message sending the data back...
-    res.status(500).json({ message: 'error getting the list of hubs' })
+    res.status(500).json({ 
+    	message: 'error getting the list of hubs' })
   })
 });
 
 // POST /
 server.post('/hubs', (req, res) => {
-	const newHub = req.body;
+	const newHub = req.body; // Object sent from front end aka client. Postman is used for testing as the client. 
 	console.log('new hub', newHub);
 	// Can add validating here. 
 	Hubs.add(newHub).then(hubs => {
@@ -101,23 +103,26 @@ server.put('/hubs/:id', (req, res) => {
 })
 
 server.get('/hubs/:id', (req, res) => {
+	const { id } = req.params;
 
+	Hubs.findById(id)
+		.then(hub => {
+			if(hub) {
+				res.json(hub);
+			} else {
+				res.status(404).json({
+					message: 'invalid hub id'
+				});
+			}
+		})
+		.catch(error => {
+			res.status(500).json({
+				error: error,
+				message: 'failed to get hub'
+			});
+		});
 });
 
-// server.get('/hobbits', (req, res) => {
-//   const hobbits = [x
-//     {
-//       id: 1,
-//       name: 'Samwise Gamgee',
-//     },
-//     {
-//       id: 2,
-//       name: 'Frodo Baggins',
-//     },
-//   ];
-
-//   res.status(200).json(hobbits);
-// });
 
 // This line is to make the server from express actually work. 
 server.listen(8000, () => console.log('API running on port 8000'));
