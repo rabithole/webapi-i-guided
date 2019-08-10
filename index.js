@@ -26,7 +26,7 @@ server.get('/now', (reg, res) => {
 server.get('/hubs', (req, res) => { // This is a route handler...
   // res.send('Hello World' + ' ' + 'Give me a break!');
   // Hubs.find() returns a promise. 
-  Hubs.find()
+  Hubs.find() // Accesses the hubs data from the database...
   	.then(hubs => {
 	    console.log('hubs', hubs);
 	    // .json will covert the data passed to json...
@@ -125,4 +125,4 @@ server.get('/hubs/:id', (req, res) => {
 
 
 // This line is to make the server from express actually work. 
-server.listen(8000, () => console.log('API running on port 8000'));
+server.listen(8001, () => console.log('API running on port 8001'));
