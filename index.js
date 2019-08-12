@@ -44,13 +44,14 @@ server.post('/hubs', (req, res) => {
 	const newHub = req.body; // Object sent from front end aka client. Postman is used for testing as the client. 
 	console.log('new hub', newHub);
 	// Can add validating here. 
-	Hubs.add(newHub).then(hubs => {
-		res.status(201).json(hubs);
+	Hubs.add(newHub)
+		.then(hubs => {
+			res.status(201).json(hubs);
 	})
 	.catch(error => {
 		res.status(500).json({
 			error: error,
-			message: 'failed to create new hub'
+			message: 'Haha, no new hub for you!'
 		});
 	});
 });
